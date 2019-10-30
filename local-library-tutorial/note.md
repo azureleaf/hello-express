@@ -12,6 +12,9 @@
 1. `require` で必要なパッケージ（npmでインストールした外部のやつ）を宣言する
 1. `require` で必要なパッケージ（プロジェクト内で自分で作ったやつ）を宣言する
 1. expressをインスタンス化する
+1. Mongooseを設定する
+    - mongooseをrequireする
+    - `mongoose.connect(データベースのURI, オプション`)でMongoDBに接続する
 1. `app.set` でviewを設定する。ここではpugを使うと言っている
 1. `app.use` でどのミドルウェアを使うのかを宣言する
     - App-level middlewares (3rd party): cookieParser(), express.json(), etc.
@@ -71,6 +74,15 @@ pug の基本的なルールを確認すると、
 - フロントエンドのための画像やスタイルシート、JavaScriptファイルを置く？
 
 ## models/book.js
+
+
+
 ## models/bookinstance.js
+
 ## models/authors.js
 ## models/genre.js
+
+
+
+
+## contrrollers/
