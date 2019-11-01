@@ -1,5 +1,12 @@
 # express-locallibrary-tutorial
+
 Tutorial "Local Library" website written in in Node/Express.
+
+
+# How to start the server
+
+1. `cd express-locallibrary-tutorial` 
+1. `DEBUG=express-locallibrary-tutorial:* npm run devstart`
 
 ----
 
