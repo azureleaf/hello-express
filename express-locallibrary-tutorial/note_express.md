@@ -84,7 +84,10 @@
 - 404 とかのエラーページの表示
 - layout.pug を拡張している。継承などにより、共通部分を何度も書くことを防いでいるっぽい。今回でいうと、HTML のヘッダ部分は共通なので、何度も書かないために拡張機能を利用している。
 
-### views/それ以外
+### views/blahblah_detale.pug
+### views/blahblah_detail.pug
+### views/blahblah_form.pug
+### views/blahblah_list.pug
 
 ## public ディレクトリ
 
@@ -92,20 +95,66 @@
 
 ## models ディレクトリ
 
+1. Define Schema
+1. 
+
 ### models/book.js
 
-- title, summary, isbn
-- author, genre はそれぞれ外部のモデルと関連付ける
+- Schema:
+    - title, summary, isbn
+    - author, genre はそれぞれ外部のモデルと関連付ける
+
+
 
 ### models/bookinstance.js
 
 - imprint, status, due_back
 - book は Book モデルと関連付ける
 
-### models/authors.js
+### models/author.js
 
--
+- 
 
 ### models/genre.js
 
 ## controllers/
+
+modelからデータを、viewからUIのテンプレートを引っ張ってきて結合するのがコントローラの役割。
+
+### controllers/authorController.js
+
+8つの関数をexportする。
+
+- author_list()
+    1. Authorモデルから全ての著者を
+    1. res.render() to embed the list values into "author_list" view
+
+- author_detail()
+    1. 
+
+- author_reate_get: ユーザーが新たなauthorを登録するためのフォームを表示する
+    1. res.render() to embed the page title into "author_form" view
+
+- author_reate_post
+    1. res.render() to embed the page title into "author_form" view
+
+- author_reate_get
+    1. res.render() to embed the page title into "author_form" view
+
+- author_reate_get
+    1. res.render() to embed the page title into "author_form" view
+
+- author_reate_get
+    1. res.render() to embed the page title into "author_form" view
+
+- author_reate_get
+    1. res.render() to embed the page title into "author_form" view
+
+
+
+### controllers/bookController.js
+
+### controllers/bookinstanceController.js
+
+
+### controllers/genreController.js
