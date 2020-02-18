@@ -1,12 +1,19 @@
 const app = require("express")();
+
+// Create HTTP Server
 const http = require("http").Server(app);
+
+// 
 const io = require("socket.io")(http);
 
+// normal Express routing
 app.get("/", function(req, res) {
   res.sendFile(__dirname + "/index.html");
 });
 
+
 io.on("connection", socket => {
+  // 
   socket.on("chat message", msg => {
     io.emit("chat message", msg);
   });
