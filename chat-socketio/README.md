@@ -2,7 +2,7 @@
 
 ## Run
 
-1. `npm install`
+1. `npm install` (if necessary)
 1. `node index.js`
 
 ## Notes
