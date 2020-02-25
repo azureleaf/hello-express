@@ -97,7 +97,7 @@
 - `mongoose`
 - `morgan`
 - `pug`
-  - CSS template
+  - html template
 - `nodemon`
   - hot reloading
 
@@ -110,12 +110,12 @@
    - mongoose を require する
    - `mongoose.connect(データベースのURI, オプション`)で MongoDB に接続する
 1. `app.set` で view を設定する。ここでは pug を使うと言っている
-1. `app.use` でどのミドルウェアを使うのかを宣言する
+1. `app.use` to declare which middlewares to use
    - App-level middlewares (3rd party): cookieParser(), express.json(), etc.
    - Router-level middlewares: 自分で定義した routing object。routes/ ディレクトリにあるやつ。
    - Built-in middlewares: express.static()
    - Error handling middlewares
-1. `module exports = app` でエクスポートする
+1. Export app with `module exports = app`
 
 ## bin/www
 
@@ -204,7 +204,7 @@
 (req, res, next) => {
   // many steps to manipulate data here
 
-  // if any error occured, return err
+  // if any error occured, call error middleware
   return next(err);
 
   // if successful, render the result
