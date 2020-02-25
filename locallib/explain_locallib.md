@@ -14,34 +14,6 @@
    1. `npm install --save-dev nodemon`
    1. `DEBUG=express-locallibrary-tutorial:* npm start`
       - Try to run
-1.
-
-## Entire Data Flow
-
-- Express.js gets the request, then returns the response
-
-![MVC_of_express](./express_mvc.png)
-
-## Follow the data flow over files
-
-1. `npm run` executes `node bin/www/`
-   - This behavior is defined in `package.json`
-1. `bin/www`
-   1. Import `app` from `app.js`
-   1. Set port number of `app`
-      - Node.js has the original env var
-      - `process.env.PORT` refers to the env var of the Node
-   1. Instantiate the `server` from `http` module, then listen to the request
-      - `var server = http.createServer(app);`
-1. `/app.js` calls:
-   - `/routes/`
-   - `/public/`
-   - mongoDB database (connection establishment)
-1. `/routes/` calls `/controllers/`
-1. `/controllers/` calls:
-   - `/models/`
-   - `/views/`
-1. `/models/` calls MongoDB (actual data interaction)
 
 ## Files Overview
 
@@ -74,6 +46,33 @@
   - `bookinstanceController.js`
   - `Controller.js`
 
+
+## Follow the data flow over files
+
+- In short, Express.js gets the request, then returns the response
+
+![MVC_of_express](./express_mvc.png)
+
+
+1. `npm run` executes `node bin/www/`
+   - This behavior is defined in `package.json`
+1. `bin/www`
+   1. Import `app` from `app.js`
+   1. Set port number of `app`
+      - Node.js has the original env var
+      - `process.env.PORT` refers to the env var of the Node
+   1. Instantiate the `server` from `http` module, then listen to the request
+      - `var server = http.createServer(app);`
+1. `/app.js` calls:
+   - `/routes/`
+   - `/public/`
+   - mongoDB database (connection establishment)
+1. `/routes/` calls `/controllers/`
+1. `/controllers/` calls:
+   - `/models/`
+   - `/views/`
+1. `/models/` calls MongoDB (actual data interaction)
+
 ## Dependent Modules
 
 - `async`
@@ -92,10 +91,14 @@
 - `debug`
 - `express`
 - `helmet`
+  - Set HTTP headers to secure whole app (for Cross-site scripting prevention, cache management, etc.)
 - `http-errors`
 - `moment`
+  - Manipulate data & time format (advanced version of vanilla JS's Date)
 - `mongoose`
+  - MongoDB ORM
 - `morgan`
+  - HTTP request logger
 - `pug`
   - html template
 - `nodemon`
@@ -112,6 +115,9 @@
 1. `app.set` で view を設定する。ここでは pug を使うと言っている
 1. `app.use` to declare which middlewares to use
    - App-level middlewares (3rd party): cookieParser(), express.json(), etc.
+   - Basic syntax is `app.use('PATH', MIDDLEWARE);`
+      - `app.use('/users', usersRouter);`: `indexRouter` middlewares will be executed on the access to `/users`
+      - `app.use('app.use(cookieParser());`: `cookieParser()` middlewares will be executed on ALL the paths (because path specification is omitted)
    - Router-level middlewares: 自分で定義した routing object。routes/ ディレクトリにあるやつ。
    - Built-in middlewares: express.static()
    - Error handling middlewares
