@@ -48,26 +48,45 @@
 
 - `/app.js` (created by generator)
 - `/node_modules`
-- `/package.json`
+- `/package.json` (created by generator)
 - `/package-lock.json`
+- `/populate.js` (created by me): Seed the sample data into the DB
 - `/bin/` (created by generator)
-  - www
+  - `www`: Start point. Run the server
 - `/public/` (created by generator)
-  - images/
-  - javascripts/
-  - stylesheets/
+  - `images/`
+  - `javascripts/`
+  - `stylesheets/`
 - `/views/` (created by generator)
-  - error.pug
-  - index.pug
-  - layout.pug
+  - `error.pug`
+  - `index.pug`
+  - `layout.pug`
 - `/routes/` (created by generator)
-  - index.js
-  - users.js
+  - `index.js`
+  - `users.js`
 - `/models/` (created by me) Note that each file has only one schema & model
-  - author.js
-  - book.js
-  - bookinstance.js
-  - genre.js
+  - `author.js`
+  - `book.js`
+  - `bookinstance.js`
+  - `genre.js`
+- `/controllers/` (created by me)
+  - `authorController.js`
+  - `bookController.js`
+  - `bookinstanceController.js`
+  - `Controller.js`
+
+## Dependent Modules
+
+- `async`
+  - Control asynchrous processes
+  - With this package, you don't have to write Promsie / async await of the vanilla JS explicitly
+  - `async.series([func1, func2, func3], callback)`
+    - Seemingly, run these functions in the specified order, then run callback
+  - `async.parallel([func1, func2, func3], callback)`
+    - Seemingly, run these functions in parallel, then run call back
+    - By this, you can control the order of the functions group & callback, while saving the time the group takes
+- `cookie-parser`
+- `express-validator`
 
 ## app.js
 
@@ -160,9 +179,14 @@
 
 ## controllers/
 
-model からデータを、view から UI のテンプレートを引っ張ってきて結合するのがコントローラの役割。
+- Controller gets data from the model,
+- Controller gets UI templates from the view,
+- Then controller link those data & UI, and return it as the HTTP response
+- All the controll
 
 ### controllers/authorController.js
+
+
 
 8 つの関数を export する。
 
