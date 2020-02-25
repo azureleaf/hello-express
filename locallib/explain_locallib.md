@@ -43,7 +43,6 @@
    - `/views/`
 1. `/models/` calls MongoDB (actual data interaction)
 
-
 ## Files Overview
 
 - `/app.js` (created by generator)
@@ -87,6 +86,20 @@
     - By this, you can control the order of the functions group & callback, while saving the time the group takes
 - `cookie-parser`
 - `express-validator`
+  - validate the input: type, length, etc.
+  - sanitize the fields: prevent malicious code injection, such as SQL injection
+- `compression`
+- `debug`
+- `express`
+- `helmet`
+- `http-errors`
+- `moment`
+- `mongoose`
+- `morgan`
+- `pug`
+  - CSS template
+- `nodemon`
+  - hot reloading
 
 ## app.js
 
@@ -160,6 +173,8 @@
 1. Define Schema
 1.
 
+![Schema of Local Library](./locallib_schema.png)
+
 ### models/book.js
 
 - Schema:
@@ -182,48 +197,82 @@
 - Controller gets data from the model,
 - Controller gets UI templates from the view,
 - Then controller link those data & UI, and return it as the HTTP response
-- All the controll
+- All the controller export functions : `exports.author_list = (req, res, next) => {}`
+- These functions come in the form like this:
+
+```js
+(req, res, next) => {
+  // many steps to manipulate data here
+
+  // if any error occured, return err
+  return next(err);
+
+  // if successful, render the result
+  res.render('author_list', {
+    title: 'Author List',
+    author_list: list_authors
+  });
+)}
+```
+
+- Each function render the corresponding view file
+  - e.g. `author_list()` render `author_list.pug`
 
 ### controllers/authorController.js
 
-
-
-8 つの関数を export する。
-
-- author_list()
-
-  1. Author モデルから全ての著者を
-  1. res.render() to embed the list values into "author_list" view
-
-- author_detail()
-
-  1.
-
-- author_reate_get: ユーザーが新たな author を登録するためのフォームを表示する
-
-  1. res.render() to embed the page title into "author_form" view
-
-- author_reate_post
-
-  1. res.render() to embed the page title into "author_form" view
-
-- author_reate_get
-
-  1. res.render() to embed the page title into "author_form" view
-
-- author_reate_get
-
-  1. res.render() to embed the page title into "author_form" view
-
-- author_reate_get
-
-  1. res.render() to embed the page title into "author_form" view
-
-- author_reate_get
-  1. res.render() to embed the page title into "author_form" view
+- `author_list()`
+  - Retrieve all the authors from `Author` model
+  - This function doesn't use `req` params
+- `author_detail()`
+  - Get author ID from request
+  - Retrive details of the author from `Author` model
+  - Retrive the books written by the author ID from `Book` model
+- `author_create_get()` & `author_update_get()`
+  - Show the input forms to add new author
+  - No interaction with DB
+- `author_create_post` & `author_update_post()`
+  - This is the array which has the values & anonymous funciton
+  - This validate the POST for new author registration
+  - values part:
+    - Validation
+    - Sanitize the fields
+  - function part:
+    - Catch the error obj if the validation failed
+    - Now the request is OK to go, let's add the author
+    - Instantiate new Author class
+    - If error on validation, show the input page again, then `return`
+    - Save the newly added Author to the DB
+- `author_delete_get()` & `author_delete_post()`
+  - Run 2 functions with `async.parallel()`
+    - `author()`: get the author ID from the request, then find it from Author model
+    - `authors_books()`: get the author ID from the request, then find the books which are written by the author of the ID
+  - Then
+    - If error, `next(err)`
+    - If the specified author doesn't exist, you can't delete it. So redirect to authors list
+    - If successful, render the view for confirmation to delete
 
 ### controllers/bookController.js
 
+- Almost same as `authorController.js`
+- `index()`
+  - Controller to show the stats: number of books / authors / genres etc.
+  - Run 5 functions with `async.parallel()`, then render the result
+  - Every function counts the entries in each model; e.g. `Book.count()`
+    - `book_count()`
+    - `book_instance_count()`
+    - `book_instance_available_count()`
+    - `author_count()`
+    - `genre_count()`
+- `book_list()`
+- `book_detail()`
+- `book_create_get()` & `book_update_get()`
+- `book_create_post()` & `book_update_get()`
+- `book_delete_get()` & `book_delete_post()`
+
 ### controllers/bookinstanceController.js
 
+- Almost same as `authorController.js`
+
 ### controllers/genreController.js
+
+- Almost same as `authorController.js`
