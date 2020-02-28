@@ -7,5 +7,5 @@ export class Office {
     id: number;
 
     @Column()
-    name: number;
+    name: string;
 }

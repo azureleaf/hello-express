@@ -13,6 +13,9 @@ export class User {
     lastName: string;
 
     @Column()
-    age: number;
+    achievement: number;
+
+    @Column()
+    officeId: number;
 
 }

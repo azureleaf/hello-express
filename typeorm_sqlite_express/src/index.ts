@@ -36,12 +36,12 @@ createConnection()
           // このinstanceofはTSの機能で、「resultがPromise Objectなら」 ということ
           if (result instanceof Promise) {
             // こっちに普通入るはず
-            // 該当するデータが見つからないときは、undefinedを返すようにしている
-            result.then(result =>
+            // TypeORMのrepositoryに対してfind()系を実行したとき、該当するデータが見つからない場合はundefinedが返るっぽい
+            result.then(result => {
               result !== null && result !== undefined
                 ? res.send(result)
-                : undefined
-            );
+                : res.send("Record Not found")
+            });
           } else if (result !== null && result !== undefined) {
             res.json(result);
           }
@@ -58,25 +58,37 @@ createConnection()
     // insert new users for test
     await connection.manager.save(
       connection.manager.create(User, {
-        firstName: "Timber",
-        lastName: "Saw",
-        age: 27
+        firstName: "義和",
+        lastName: "鈴木",
+        achievement: 80,
+        officeId: 1
       })
     );
     await connection.manager.save(
       connection.manager.create(User, {
-        firstName: "Phantom",
-        lastName: "Assassin",
-        age: 24
+        firstName: "佐和子",
+        lastName: "田中",
+        achievement: 20,
+        officeId: 1
       })
     );
 
     // insert new offices for test
-    // await connection.manager.save(
-    //   connection.manager.create(Office, {
-    //     name: "Nagamachi"
-    //   })
-    // );
+    await connection.manager.save(
+      connection.manager.create(Office, {
+        name: "Nagamachi"
+      })
+    );
+    await connection.manager.save(
+      connection.manager.create(Office, {
+        name: "Sendai"
+      })
+    );
+    await connection.manager.save(
+      connection.manager.create(Office, {
+        name: "Izumi"
+      })
+    );
 
     console.log(
       "Express server has started on port 3000. Open http://localhost:3000/users to see results"
