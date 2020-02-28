@@ -21,9 +21,9 @@
 - `/node_modules`
 - `/package.json` (created by generator)
 - `/package-lock.json`
-- `/populate.js` (created by me): Seed the sample data into the DB
+- `/populate.js` (created by me)
 - `/bin/` (created by generator)
-  - `www`: Start point. Run the server
+  - `www`
 - `/public/` (created by generator)
   - `images/`
   - `javascripts/`
@@ -131,9 +131,16 @@
 
 ## /populatedb.js
 
+- Seed the sample data to the DB
+- Where in the project is this JS executed?
+
 ## /package-lock.json
 
-- package.json の詳しいやつ？これは npm install の結果自動で作成されるものなので、我々がいじることはないと思われる
+- Detailed version of `package.json`, I guess
+  - Includes the list of dependency packages of the packages specified in `package.json`
+  - Show integrity of each package; maybe Hash value
+  - Show URLs of CommonJS Complicant Package Registry for each package
+- This is the automatically generated file; users won't change the content of this
 
 ## /routes/index.js
 

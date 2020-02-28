@@ -2,6 +2,9 @@
 
 ## Installation processes I did
 
+1. `npm i typescript -g`
+1. `npm i typeorm -g`
+    - To use `typeorm init` command
 1. `npm init`
 1. `npm i -D typescript ts-node`
     - Optional: You may install these two packages globally
