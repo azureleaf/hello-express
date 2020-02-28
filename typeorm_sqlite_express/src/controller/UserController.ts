@@ -2,6 +2,7 @@ import {getRepository} from "typeorm";
 import {NextFunction, Request, Response} from "express";
 import {User} from "../entity/User";
 
+// controller内部のどのactionもPromise objectを返していることに留意
 export class UserController {
 
     private userRepository = getRepository(User);
