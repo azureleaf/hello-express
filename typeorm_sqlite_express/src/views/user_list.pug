@@ -1,0 +1,16 @@
+link(rel='stylesheet', href='/stylesheet/default.css')
+
+h1= title
+
+table
+  tr
+    th ID
+    th 名前
+    th 事業所番号
+    th 達成率
+  each user in users
+    tr
+      td= user.id
+      td #{user.lastName} #{user.firstName}
+      td= user.officeId
+      td= user.achievement

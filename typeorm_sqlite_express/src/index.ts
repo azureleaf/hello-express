@@ -6,6 +6,8 @@ import { Request, Response } from "express";
 import { Routes } from "./routes";
 import { User } from "./entity/User";
 import { Office } from "./entity/Office";
+import * as path from "path";
+import { resolveSoa } from "dns";
 
 // createConnection()はPromiseを返す
 // サーバの接続情報などを、引数に渡す（今回は不要なので空）
@@ -16,6 +18,14 @@ createConnection()
 
     // 使うミドルウェアの宣言
     app.use(bodyParser.json());
+
+    // CSSなどの場所
+    app.use(express.static(__dirname + '/public'));
+
+    // View関係の変数の設定
+    app.set("views", path.join(__dirname, "views"));
+    app.set("view engine", "pug");
+    console.log("Views directory is set to:", app.get("views")); // ちゃんと設定できたか確認
 
     // register express routes from defined application routes
     // Routesはオブジェクトの配列になっている
@@ -35,12 +45,12 @@ createConnection()
           );
           // このinstanceofはTSの機能で、「resultがPromise Objectなら」 ということ
           if (result instanceof Promise) {
-            // こっちに普通入るはず
             // TypeORMのrepositoryに対してfind()系を実行したとき、該当するデータが見つからない場合はundefinedが返るっぽい
             result.then(result => {
-              result !== null && result !== undefined
-                ? res.send(result)
-                : res.send("Record Not found")
+              if (result !== null && result !== undefined)
+                res.send(result);
+              else undefined;
+              // : res.send("Record Not found"); // これにすると、Promiseがどうとかいうエラーがでる
             });
           } else if (result !== null && result !== undefined) {
             res.json(result);
@@ -90,8 +100,6 @@ createConnection()
       })
     );
 
-    console.log(
-      "Express server has started on port 3000. Open http://localhost:3000/users to see results"
-    );
+    console.log("Express server has started on port 3000");
   })
   .catch(error => console.log(error));

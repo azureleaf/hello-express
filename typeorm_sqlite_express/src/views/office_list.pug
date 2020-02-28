@@ -1,0 +1,12 @@
+link(rel='stylesheet', href='/stylesheet/default.css')
+
+h1= title
+
+table
+  tr
+    th 番号
+    th 事業所名
+  each office, index in offices
+    tr
+      td= office.id
+      td= office.name
