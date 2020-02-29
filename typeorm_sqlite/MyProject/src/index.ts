@@ -5,11 +5,22 @@ import {User} from "./entity/User";
 createConnection().then(async connection => {
 
     console.log("Inserting a new user into the database...");
+    
     const user = new User();
     user.firstName = "Timber";
     user.lastName = "Saw";
     user.age = 25;
     await connection.manager.save(user);
+
+    
+    const user2 = new User();
+    user2.firstName = "Taro";
+    user2.lastName = "Tanaka";
+    user2.age = 20;
+    await connection.manager.save(user2);
+    
+
+
     console.log("Saved a new user with id: " + user.id);
 
     console.log("Loading users from the database...");
