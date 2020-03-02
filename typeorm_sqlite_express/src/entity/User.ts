@@ -1,21 +1,23 @@
-import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { Office } from "./Office";
 
 @Entity()
 export class User {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @PrimaryGeneratedColumn()
-    id: number;
+  @Column()
+  firstName: string;
 
-    @Column()
-    firstName: string;
+  @Column()
+  lastName: string;
 
-    @Column()
-    lastName: string;
+  @Column()
+  achievement: number;
 
-    @Column()
-    achievement: number;
-
-    @Column()
-    officeId: number;
-
+  @ManyToOne(
+    type => Office,
+    office => office.id
+  )
+  officeId: Office;
 }

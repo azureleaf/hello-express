@@ -1,4 +1,5 @@
-import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, OneToMany, useContainer} from "typeorm";
+import { User} from "./User";
 
 @Entity()
 export class Office {
@@ -8,4 +9,7 @@ export class Office {
 
     @Column()
     name: string;
+
+    @OneToMany(type => User, user => user.id)
+    users: User[];
 }
