@@ -7,7 +7,7 @@ export class UserController {
   private userRepository = getRepository(User);
 
   async all(request: Request, response: Response, next: NextFunction) {
-    this.userRepository.find().then(users => {
+    this.userRepository.find({ relations: ["office"] }).then(users => {
       response.render("user_list", { title: "メンバー一覧", users: users });
     });
   }

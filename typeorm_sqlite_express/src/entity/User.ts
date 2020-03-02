@@ -17,7 +17,7 @@ export class User {
 
   @ManyToOne(
     type => Office,
-    office => office.id
+    office => office.users
   )
-  officeId: Office;
+  office: Office;
 }

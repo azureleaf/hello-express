@@ -10,6 +10,6 @@ export class Office {
     @Column()
     name: string;
 
-    @OneToMany(type => User, user => user.id)
+    @OneToMany(type => User, user => user.office)
     users: User[];
 }
