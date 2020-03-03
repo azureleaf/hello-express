@@ -6,13 +6,25 @@ router.get("/", function(req, res, next) {
   res.render("index", { title: "Express" });
 });
 
-router.get("/test", function(req, res, next) {
-  res.render("index", { title: "OK, now you accessed to /test" });
+router.get("/echo", function(req, res, next) {
+  res.render("index", { title: "res.renderのデモ", msg: "/test/にGETメソッドでアクセスしました" });
 });
 
-router.post("/test", function(req, res, next) {
+// Request bodyをそのままオウム返しで返す
+router.post("/echo", function(req, res, next) {
   // res.send(req.body.text);
-  res.render("index", { title: req.body.text });
+  res.render("index", { title: "res.renderのデモ", msg: req.body.text });
+});
+
+// Requestの内容を少しだけ変更して返す
+router.post("/members", function(req, res, next) {
+  // Viewの管理はVue.js側でやるので、ここではJSONを返すだけに留める
+  res.json({ 
+    msg: "メンバーの送信を確認しました", 
+    accessedAt: Date(Date.now()).toString(),
+    name: req.body.memberName + "さん",
+    office: req.body.memberOffice + "事業所"
+   });
 });
 
 module.exports = router;
