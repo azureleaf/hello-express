@@ -15,6 +15,36 @@ Reference: https://qiita.com/y4u0t2a1r0/items/a6aea444efc8e8e65293
 1. `npm install`
 1. `npm run serve`: Try to run
 1. `npm install -S axios`
+1. `mkdir src/api`
+1. `touch src/api/index.js` & `touch src/api/methods.js`
+
+   ```js
+   // api/index.js
+   import axios from "axios";
+
+   // Create the Axios instance
+   export default () => {
+     return axios.create({
+       // Experss app のポート番号をここで指定
+       baseURL: `http://localhost:3000/`
+     });
+   };
+   ```
+
+   ```js
+   // api/methods.js
+   import Api from "./index";
+
+   export default {
+     testPosting() {
+       const item = { text: "Success!" };
+       return Api().post("/test", item);
+     }
+     // 他の処理も追加可能
+   };
+   ```
+
+1. Run
 
 ## Edit History: backend
 
@@ -30,18 +60,3 @@ Reference: https://qiita.com/y4u0t2a1r0/items/a6aea444efc8e8e65293
    app.use(bodyParser.json());
    app.use(cors());
    ```
-1. `mkdir api`
-1. `touch api/axios.js`
-
-   ```js
-   // api/axios.js
-   import axios from "axios";
-
-   export default () => {
-     return axios.create({
-       baseURL: `http://localhost:3000/`
-     });
-   };
-   ```
-
-1. Run
