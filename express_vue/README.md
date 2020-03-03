@@ -4,7 +4,12 @@ Reference: https://qiita.com/y4u0t2a1r0/items/a6aea444efc8e8e65293
 
 ## How to use
 
-- aa
+- `cd frontend`
+- `npm install`: For the first run only
+- `npm run serve`
+- `cd backend`
+- `npm install`: For the first run only
+- `npx nodemon node ./bin/www`
 
 ## Edit History: frontend
 
