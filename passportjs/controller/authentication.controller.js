@@ -2,8 +2,20 @@
 const User = require("../models/user.model");
 const passport = require("passport");
 
+/**
+ * This controller exports 4 functions:
+ *  login()
+ *  signup()
+ *  change_password()
+ *  forgot_password()
+ * 
+ */
+
 //auth operations
+// Authentication infos are included in the request body
 exports.login = function(req, res, next) {
+  
+  // When the email isn't supplied, return JSON with error message
   if (!req.body.email) {
     return res.status(422).json({
       errors: {
@@ -12,6 +24,7 @@ exports.login = function(req, res, next) {
     });
   }
 
+  // When the password isn't supplied, return JSON with error message
   if (!req.body.password) {
     return res.status(422).json({
       errors: {
@@ -20,24 +33,32 @@ exports.login = function(req, res, next) {
     });
   }
 
+  // When the both PW and email are supplied, try to authenticate with them
   return passport.authenticate(
     "local",
     { session: false },
     (err, passportUser, info) => {
+      // If authentication failed
       if (err) {
-        return next(err);
+        return next(err); // which middleware will catch this???
       }
+
+      // If the authentication is successful
+
       if (passportUser) {
         const user = passportUser;
         user.token = passportUser.generateJWT();
         return res.json({ user: user.toAuthJSON(user.token) });
       }
 
+      // BAD REQUEST
+      // 
       return res.json({ status: 400 });
     }
-  )(req, res, next);
+  )(req, res, next); // what's this?
 };
 
+// Create the user
 exports.signup = function(req, res, next) {
   const { email, password } = req.body;
   User.findOne({ "local.email": email }, (err, userMatch) => {

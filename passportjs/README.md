@@ -1,5 +1,9 @@
 # Try to use Passport.js
 
+## Reference
+
+https://medium.com/@basics.aki/step-wise-tutorial-for-node-js-authentication-using-passport-js-and-jwt-using-apis-cfbf274ae522
+
 ## Files (express-generator)
 
 ```
@@ -81,7 +85,7 @@ server.listen(port);
 
 ```js
 // Seemingly, .on(EVENT_NAME, EVENT_HANDLER) is the basic syntax
-// 
+//
 server.on("error", onError);
 
 res.on();
@@ -96,3 +100,72 @@ res.on();
 
 - Call `router/index.js` router for the root path `/`
 - Call `router/users.js` router for the user path `/users`
+
+## `passport.authenticate()`
+
+- `.authenticate(STRATEGY, OPTIONS, CALLBACK)`
+  - Seemingly, OPTIONS or CALLBACK can be omitted
+
+### strategy
+
+- local
+- basic
+- openid
+- provider
+  - OAuth Provider
+- facebook
+- twitter
+- google
+- digest
+- token
+- bearer
+
+### options (object literal)
+
+- "Message flashing"
+  - The flashing system basically makes it possible to record a message at the end of a request and access it next request and only next request
+  - So, flash message will disappear on the later request / page reloading
+  - This is usually combined with a layout template that does this
+  - Note that browsers and sometimes web servers enforce a limit on cookie sizes
+  - This means that flashing messages that are too large for session cookies causes message flashing to fail silently.
+  - e.g. "Successfully logged in", "Failed: Invalid Password or/and Username"
+
+```js
+{
+  session: false
+  successRedirect: '/',
+  failureRedirect: '/login',
+
+  // Flash
+  failureFlash: true,
+  failureFlash: 'Invalid username or password.',
+  successFlash: 'Welcome!'
+
+  // Scope
+  scope: 'email'
+  scope: ['email', 'sms']
+}
+```
+
+### callback
+
+```js
+function(err, user, info) {
+  // When auth failed
+  if (err) { return next(err); }
+
+  // When the authentication is successful, passport will pass the user object to the callback, maybe
+  // If the user obj isn't set, ask the user to login
+  if (!user) { return res.redirect('/login'); }
+
+  // When the auth is successful
+  req.logIn(user, function(err) {
+    // "user" is set but error... what?
+    if (err) { return next(err); }
+
+    // So, every user has the personal page like:
+    // sample.com/users/john
+    return res.redirect('/users/' + user.username);
+  });
+}
+```
