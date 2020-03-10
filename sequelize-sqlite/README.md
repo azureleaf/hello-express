@@ -16,7 +16,7 @@ Reference: https://qiita.com/tatsurou313/items/2ba0387806b07f442b8c
 
 1. `cd backend`
 1. `npm install`
-1. `node ./bin/www`
+1. `node ./bin/www` / `npx nodemon node ./bin/www`
 
 ## Notes
 
@@ -24,13 +24,13 @@ Reference: https://qiita.com/tatsurou313/items/2ba0387806b07f442b8c
 - しかし Sequelize CLI がやってくれるのはディレクトリ構造と config などの雛形だけ
   - Express は別途自分で用意する必要がある
 
-```js
+```
 .
 ├── config
 │   └── config.json
 ├── migrations
 ├── models
-│   └── index.js // このファイルはmodelではなく、全モデルをまとめてdbというオブジェクトにモジュール化処理をする
+│   └── index.js
 └── package.json
 ```
 
@@ -58,3 +58,8 @@ Reference: https://qiita.com/tatsurou313/items/2ba0387806b07f442b8c
 1. `npx sequelize db:migrate --env development`
 1. `npx sequelize seed:create --name seed-users`
 1. `npx sequelize db:seed:all`
+
+### Frontend
+
+1. `cd frontend`
+1. `npm install axios`
