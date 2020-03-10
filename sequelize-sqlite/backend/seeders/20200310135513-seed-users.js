@@ -10,25 +10,23 @@ module.exports = {
           gender: "male",
           office: "長町",
           created_at: new Date(),
-          updated_at: new Date(),
+          updated_at: new Date()
         },
         {
           name: "鈴木可奈子",
           gender: "female",
           office: "仙台",
           created_at: new Date(),
-          updated_at: new Date(),
-        },
+          updated_at: new Date()
+        }
       ],
       {}
     );
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete("Users", [
-      {
-        first_name: "John"
-      }
-    ]);
+    return queryInterface.bulkDelete("Users", {
+      [Sequelize.Op.or]: [{ name: "鈴木可奈子" }, { name: "田中太郎" }]
+    });
   }
 };
