@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-var models = require("../models/");
+var models = require("../models/"); // model/index.js内部の処理も使うので、必要なモデルだけでなくModelsディレクトリ全体を持ってくる
 
 /* GET users listing. */
 router.get("/", function(req, res, next) {
@@ -18,8 +18,9 @@ router.get("/add", function(req, res, next) {
       updated_at: new Date()
     })
     .then(() => {
-      res.send("Inserted.")
+      return models.user.findAll();
     })
+    .then(users => res.json(users))
     .catch(err => {
       console.error("エラーでした:", err);
     });
