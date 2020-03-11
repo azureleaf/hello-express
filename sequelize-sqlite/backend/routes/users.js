@@ -28,7 +28,7 @@ router.get("/addsato", function(req, res, next) {
     });
 });
 
-// 実際に新しいメンバーを追加
+// リクエストに基づいて新しいユーザを追加
 router.post("/add", function(req, res, next) {
   models.user
     .create({
@@ -43,6 +43,23 @@ router.post("/add", function(req, res, next) {
     })
     .catch(err => {
       console.error("エラーでした:", err);
+    });
+});
+
+// ユーザーを削除
+router.post("/delete/:userid", function(req, res, next) {
+  console.log(req.params.userid);
+  models.user
+    .destroy({
+      // 該当するユーザのみをSELECT
+      where: {id: req.params.userid}
+    })
+    .then(() => {
+      res.redirect("/users/"); // 更新後の名簿を返す
+    })
+    .catch(err => {
+      // 該当するユーザが見つからなかった時も、エラーはthrowされないっぽい
+      console.error("削除時エラー:", err);
     });
 });
 

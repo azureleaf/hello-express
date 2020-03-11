@@ -7,15 +7,28 @@
         <li v-for="(user, index) in users" :key="index">
           ID: {{ user.id }}, 名前： {{ user.name }}, 性別： {{ user.gender }},
           事業所： {{ user.office }}
+          <button @click="deleteUser(user.id)">X</button>
         </li>
       </ul>
     </div>
     <div>
       <h2>新規登録</h2>
       <input v-model="name" placeholder="名前を入力" />
-      <input type="radio" id="pick_male" name="gender" value="male" v-model="gender" />
+      <input
+        type="radio"
+        id="pick_male"
+        name="gender"
+        value="male"
+        v-model="gender"
+      />
       <label for="pick_male">男</label>
-      <input type="radio" id="pick_female" name="gender" value="female" v-model="gender" />
+      <input
+        type="radio"
+        id="pick_female"
+        name="gender"
+        value="female"
+        v-model="gender"
+      />
       <label for="pick_female">女</label>
       <select v-model="office">
         <option disabled value>事業所を選択</option>
@@ -57,6 +70,12 @@ export default {
       } catch (err) {
         console.error("登録時エラー：", err);
       }
+    },
+    async deleteUser(id) {
+      let response = await Axios.post(
+        "http://localhost:3000/users/delete/" + id
+      );
+      this.users = response.data;
     }
   },
   created() {
