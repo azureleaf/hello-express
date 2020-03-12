@@ -29,16 +29,27 @@ passport.use(
       passwordField: "password",
       passReqToCallback: true
     },
+    // "done(ERROR, USER, OPTIONS)" is callback function
     function(req, username, password, done) {
       process.nextTick(function() {
-        //ユーザ名、パスワード不正時の処理を記述する
+        console.log("here we go");
         if (!username) {
-          return done(null, false, { message: "Username is incorrect" });
-          //↓にはPasswordチェック処理を実装してください。
-        } else if (password !== result[0].password) {
-          return done(null, false, { message: "Username is incorrect" });
+          // ユーザー名が空っぽの時の処理???ではないっぽい
+          // 実際には空っぽでもこの部分に到達しない
+          // ユーザーもしくはパスワードの一方が空のときは、そもそもこの関数が実行されていない
+          console.log("ユーザ名未入力でのログイン試行です");
+          return done(null, false, {
+            message: "ユーザー名が入力されていません"
+          });
+        } else if (password !== "test" || username !== "test") {
+          // ログイン情報が不正確なときの処理
+          // 実際はDBへのアクセス処理をここに書き、それがログイン情報と一致しているかの処理を書く
+          console.log("不正な値でのログイン試行です");
+          return done(null, false, {
+            message: "パスワードかユーザー名が不正です"
+          });
         } else {
-          console.log("username" + username);
+          console.log("ログイン成功。ユーザー名は", username);
           return done(null, username);
         }
       });
