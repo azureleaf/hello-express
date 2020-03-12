@@ -4,7 +4,8 @@ var passport = require("passport");
 
 /* GET users listing. */
 router.get("/", function(req, res, next) {
-  // ログインしたユーザーからのrequestにはuserが設定されていることに注意（その値はユーザー側から捏造可能か？）
+  // ログインしたユーザーからのrequestにはuserが設定されていることに注意
+  // このreq.userは、セッション管理のMWで付加されるもの（生のユーザーからのrequestには含まれていない）
   // ログインしていなければ、userは空っぽのまま渡される
   res.render("index", { title: "Index page", user: req.user });
 });

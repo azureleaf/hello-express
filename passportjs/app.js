@@ -25,6 +25,7 @@ app.use(passport.session());
 passport.use(
   new LocalStrategy(
     {
+      // この部分の意味は？<input>側のnameがこれと一致してなくても動くようだが
       userNameField: "username",
       passwordField: "password",
       passReqToCallback: true
