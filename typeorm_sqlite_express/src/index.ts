@@ -68,7 +68,7 @@ createConnection()
     app.listen(3000);
 
     // Run seeder
-    seeder.run();
+    seeder.run2();
 
     console.log("Express server has started on port 3000");
   })
