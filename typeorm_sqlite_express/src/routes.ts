@@ -1,12 +1,15 @@
+import { IndexController} from "./controller/IndexController";
 import { UserController } from "./controller/UserController";
 import { OfficeController } from "./controller/OfficeController";
 
+
+// それぞれのURLへの要求に対して、どのコントローラのどのアクションを起動するのかを定義
 export const Routes = [
   {
     method: "get",
     route: "/",
-    controller: UserController,
-    action: "all"
+    controller: IndexController,
+    action: "show"
   },
   {
     method: "get",
