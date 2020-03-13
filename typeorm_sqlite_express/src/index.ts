@@ -9,6 +9,11 @@ import { Office } from "./entity/Office";
 import * as path from "path";
 import { resolveSoa } from "dns";
 
+// 自分で定義したseeding関数
+// exportした場合は、importする
+// exports.blahblahの場合は、requireする...のか？？？
+const seeder = require("./seeds");
+
 // createConnection()はPromiseを返す
 // サーバの接続情報などを、引数に渡す（今回は不要なので空）
 createConnection()
@@ -64,6 +69,8 @@ createConnection()
     // start express server
     app.listen(3000);
 
+    seeder.insertSeeds();
+
     // insert new users for test
     const user1 = new User();
     user1.firstName = "義和";
@@ -103,7 +110,6 @@ createConnection()
     office1.name = "Sendai";
     office1.users = [user1, user2];
     await connection.manager.save(office1);
-
 
     const office2 = new Office();
     office2.name = "Nagamachi";

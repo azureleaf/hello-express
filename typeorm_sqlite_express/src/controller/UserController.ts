@@ -4,6 +4,8 @@ import { User } from "../entity/User";
 
 // controller内部のどのactionもPromise objectを返していることに留意
 export class UserController {
+  // 目的のレポジトリを持ってくる
+  // このレポジトリに対してCRUD操作などをしていく
   private userRepository = getRepository(User);
 
   async all(request: Request, response: Response, next: NextFunction) {
