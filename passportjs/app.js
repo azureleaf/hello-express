@@ -33,7 +33,7 @@ passport.use(
     // "done(ERROR, USER, OPTIONS)" is callback function
     function(req, username, password, done) {
       process.nextTick(function() {
-        console.log("here we go");
+        console.log("LocalStrategyのコールバックが呼ばれました");
         if (!username) {
           // ユーザー名が空っぽの時の処理???ではないっぽい
           // 実際には空っぽでもこの部分に到達しない
@@ -45,7 +45,7 @@ passport.use(
         } else if (password !== "test" || username !== "test") {
           // ログイン情報が不正確なときの処理
           // 実際はDBへのアクセス処理をここに書き、それがログイン情報と一致しているかの処理を書く
-          console.log("不正な値でのログイン試行です");
+          console.log("パスワードとユーザ名は送信されましたが、不正な値です");
           return done(null, false, {
             message: "パスワードかユーザー名が不正です"
           });
@@ -57,6 +57,14 @@ passport.use(
     }
   )
 );
+
+// passport
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+passport.deserializeUser(function(user, done) {
+  done(null, user);
+});
 
 app.use(logger("dev"));
 app.use(express.json());
