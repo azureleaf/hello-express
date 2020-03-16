@@ -49,16 +49,21 @@ router.get("/private", function(req, res) {
 // 。。。はずだが、なぜか上手くいかない（認証していないのに通ってしまう）
 checkAuth = function(req, res, next) {
   if (req.user) {
+    // ログイン済みの場合の処理
     console.log("このユーザは認証済みです");
     return next();
   }
-  // ログイン済みでない時
-  req.session.redirectTo = "/users/private2"; // ログイン後にこの画面に戻るため、このURLをセッションに記憶しておく
+  // ログイン後にこの画面に戻るため、このURLをセッションに記憶しておく
+  req.session.redirectTo = "/users/private2";
   res.redirect("/users/login");
 };
 
 router.get("/private2", checkAuth, function(req, res) {
-  res.render("private", { title: "Private Page", user: req.user });
+  res.render("private", {
+    title: "Private Page",
+    user: req.user,
+    msg: req.session.redirectTo
+  });
 });
 
 module.exports = router;
