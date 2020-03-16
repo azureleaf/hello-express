@@ -18,15 +18,26 @@ router.get("/login", function(req, res) {
 });
 
 // ログイン処理の受付
-router.post(
-  "/login",
-  passport.authenticate("local", {
-    successRedirect: "/users/private",
-    failureRedirect: "/users/login",
-    session: true // sessionを使用しないので、アクセスするたびにログインを要求される？
-    // failureFlash: "ログイン情報が不正です"
-  })
-);
+// Custom Callbackを定義する
+router.post("/login", function(req, res, next) {
+  passport.authenticate("local", function(err, user, info) {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      return res.redirect("/users/login");
+    }
+    req.logIn(user, function(err) {
+      if (err) {
+        return next(err);
+      }
+      return res.redirect(
+        // ユーザをログイン画面の直前にいたURLに戻す
+        req.session.redirectTo ? req.session.redirectTo : "/"
+      );
+    });
+  })(req, res, next);
+});
 
 // ログアウト処理の受付
 router.get("/logout", function(req, res) {
@@ -34,19 +45,25 @@ router.get("/logout", function(req, res) {
   res.redirect("/");
 });
 
-router.get("/private", function(req, res) {
+// 会員ページへのログイン要求の書き方その１：
+// routingのところにログインしているか否かのチェックをベタ書きするパターン
+router.get("/private1", function(req, res) {
   if (!req.user) {
     console.log(
-      "限定ページへのアクセス要求がありましたが、ログインしていないため拒絶します"
+      "限定ページへのアクセス要求がありましたが、未認証のためログインページに飛ばします"
     );
+    req.session.redirectTo = "/users/private1";
     res.redirect("/users/login");
   } else {
-    res.render("private", { title: "Private Page", user: req.user });
+    delete req.session.redirectTo;
+    res.render("private", {
+      title: "Private Page 1",
+      user: req.user
+    });
   }
 });
 
-// 以下のように、認証済みかチェックするミドルウェア＋レンダー関数というやり方もできる
-// 。。。はずだが、なぜか上手くいかない（認証していないのに通ってしまう）
+// ログイン処理のミドルウェアにより、要認証ページそれぞれのroutingでの記述量を削減する
 checkAuth = function(req, res, next) {
   if (req.user) {
     // ログイン済みの場合の処理
@@ -54,15 +71,26 @@ checkAuth = function(req, res, next) {
     return next();
   }
   // ログイン後にこの画面に戻るため、このURLをセッションに記憶しておく
-  req.session.redirectTo = "/users/private2";
+  req.session.redirectTo = req.originalUrl; // users/private2からこのMWを呼び出したなら、そのURLが入る
   res.redirect("/users/login");
 };
 
+// 会員ページへのログイン要求の書き方その2
+// 現在ログイン状態か否かのミドルウェアを用意し、それにより各routingの記述量を削減するパターン
 router.get("/private2", checkAuth, function(req, res) {
+  // 予期せぬ副作用を防ぐため、使い終わったsessionの値を削除する
+  delete req.session.redirectTo;
   res.render("private", {
-    title: "Private Page",
-    user: req.user,
-    msg: req.session.redirectTo
+    title: "Private Page 2",
+    user: req.user
+  });
+});
+
+router.get("/private3", checkAuth, function(req, res) {
+  delete req.session.redirectTo;
+  res.render("private", {
+    title: "Private Page 3",
+    user: req.user
   });
 });
 
