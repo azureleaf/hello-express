@@ -10,7 +10,7 @@
    "dependencies": {
       "body-parser": "^1.18.1",
       "express": "^4.15.4",
-      "pug": "^2.0.4",
+      "pug": "^3.0.1",
       "reflect-metadata": "^0.1.10",
       "sqlite3": "^4.0.3",
       "typeorm": "0.2.22"
